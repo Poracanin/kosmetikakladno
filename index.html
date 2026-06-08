@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FACE &amp; BODY STUDIO — Kosmetika Kladno</title>
+<meta name="description" content="Kosmetický salon FACE & BODY STUDIO v Kladně. Lékařská kosmetika PURLES, neinvazivní lifting HIFU a Thermage, fotorejuvenace, kryolipolýza. Zdravá pleť, krásná pleť.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F3EC;
+    --bg-2:#EEE7DB;
+    --ink:#1B1613;
+    --ink-2:#2A2320;
+    --soft:#857B6F;
+    --line:rgba(27,22,19,.14);
+    --line-2:rgba(27,22,19,.07);
+    --maxw:1240px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --gut:clamp(20px,5vw,40px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Outfit',sans-serif;
+    background:var(--bg);color:var(--ink);
+    line-height:1.6;font-weight:400;letter-spacing:-.01em;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  body.lock{overflow:hidden}
+  h1,h2,h3{font-weight:300;line-height:1.02;letter-spacing:-.03em}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
+  .mono{font-family:'DM Mono',monospace}
+  .eyebrow{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+
+  /* buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font-size:.82rem;font-weight:500;letter-spacing:.02em;
+    padding:15px 28px;border-radius:0;cursor:pointer;border:1px solid var(--ink);
+    transition:all .35s var(--ease);min-height:50px;
+  }
+  .btn svg{width:15px;height:15px}
+  .btn-fill{background:var(--ink);color:#F7F1E7}
+  .btn-fill:hover{background:#F7F1E7;color:var(--ink)}
+  .btn-line{background:transparent;color:var(--ink)}
+  .btn-line:hover{background:var(--ink);color:#F7F1E7}
+  .btn-inv{background:#F7F1E7;color:var(--ink);border-color:#F7F1E7}
+  .btn-inv:hover{background:transparent;color:#F7F1E7}
+  .btn-line-inv{background:transparent;color:#F7F1E7;border-color:rgba(247,241,231,.4)}
+  .btn-line-inv:hover{background:#F7F1E7;color:var(--ink);border-color:#F7F1E7}
+
+  /* header */
+  header{position:fixed;top:0;left:0;right:0;z-index:120;transition:background .4s var(--ease),border-color .4s,padding .4s var(--ease);padding:24px 0;border-bottom:1px solid transparent}
+  header.scrolled{background:rgba(247,241,231,.85);backdrop-filter:blur(16px);border-color:var(--line-2);padding:16px 0}
+  .nav{display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;line-height:1.05}
+  .brand-logo{display:block;width:clamp(118px,12vw,172px);height:auto;transition:filter .35s var(--ease);filter:drop-shadow(0 1px 10px rgba(0,0,0,.28))}
+  .brand .mark{font-size:1.12rem;font-weight:500;letter-spacing:.02em}
+  .brand .sub{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--soft);margin-top:5px}
+  .nav-mid{display:flex;gap:32px}
+  .nav-mid a{font-size:.86rem;color:var(--soft);transition:color .25s}
+  .nav-mid a:hover{color:var(--ink)}
+  .nav-right{display:flex;align-items:center;gap:18px}
+  .menu-btn{display:flex;align-items:center;gap:11px;background:none;border:none;cursor:pointer;font-family:'Outfit';font-size:.82rem;font-weight:500;color:var(--ink);padding:8px 4px}
+  .menu-btn .bars{display:flex;flex-direction:column;gap:4px;width:22px}
+  .menu-btn .bars span{height:1.6px;background:var(--ink);width:100%;transition:.3s var(--ease)}
+  .menu-btn:hover .bars span:nth-child(1){transform:translateX(3px)}
+  .menu-btn:hover .bars span:nth-child(3){transform:translateX(-3px)}
+  header:not(.scrolled) .nav-mid a,
+  header:not(.scrolled) .menu-btn{color:#F7F1E7}
+  header:not(.scrolled) .menu-btn .bars span{background:#F7F1E7}
+  header:not(.scrolled) .brand-logo{filter:invert(1) brightness(2) drop-shadow(0 1px 14px rgba(0,0,0,.32))}
+
+  /* modal menu */
+  .modal{position:fixed;inset:0;z-index:200;background:var(--ink);color:#F7F1E7;display:flex;flex-direction:column;
+    opacity:0;visibility:hidden;transform:translateY(-12px);transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s}
+  .modal.open{opacity:1;visibility:visible;transform:none}
+  .modal-top{display:flex;align-items:center;justify-content:space-between;padding:24px var(--gut);border-bottom:1px solid rgba(247,241,231,.12)}
+  .modal-top .mark{font-size:1.12rem;font-weight:500}
+  .close-btn{display:flex;align-items:center;gap:10px;background:none;border:none;color:#F7F1E7;cursor:pointer;font-family:'Outfit';font-size:.82rem;font-weight:500;padding:6px}
+  .close-btn svg{width:22px;height:22px;stroke:#F7F1E7}
+  .modal-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:30px var(--gut)}
+  .modal-nav{display:flex;flex-direction:column}
+  .modal-nav a{display:flex;align-items:baseline;gap:18px;font-size:clamp(2.1rem,8vw,4.4rem);font-weight:200;letter-spacing:-.03em;color:#F7F1E7;padding:clamp(8px,1.6vw,16px) 0;border-bottom:1px solid rgba(247,241,231,.1);transition:padding-left .4s var(--ease),color .3s;opacity:0;transform:translateY(20px)}
+  .modal.open .modal-nav a{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease),padding-left .4s var(--ease),color .3s}
+  .modal.open .modal-nav a:nth-child(1){transition-delay:.12s}
+  .modal.open .modal-nav a:nth-child(2){transition-delay:.18s}
+  .modal.open .modal-nav a:nth-child(3){transition-delay:.24s}
+  .modal.open .modal-nav a:nth-child(4){transition-delay:.30s}
+  .modal.open .modal-nav a:nth-child(5){transition-delay:.36s}
+  .modal-nav a:hover{padding-left:18px;color:rgba(247,241,231,.65)}
+  .modal-nav a .idx{font-family:'DM Mono',monospace;font-size:.8rem;color:rgba(247,241,231,.4);letter-spacing:.1em}
+  .modal-foot{display:flex;flex-wrap:wrap;gap:30px 60px;padding:26px var(--gut) calc(26px + env(safe-area-inset-bottom));border-top:1px solid rgba(247,241,231,.12)}
+  .modal-foot .blk .k{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,241,231,.45)}
+  .modal-foot .blk .v{font-size:1rem;color:#F7F1E7;margin-top:4px}
+  .modal-foot .blk a.v:hover{color:rgba(247,241,231,.6)}
+
+  /* hero */
+  .hero{position:relative;min-height:100svh;padding:0;border-bottom:0;overflow:hidden;background:#111;color:#F7F1E7;display:flex;align-items:flex-end}
+  .hero-video{position:absolute;inset:0;z-index:0;background:#111;overflow:hidden}
+  .hero-video video{width:100%;height:100%;object-fit:cover;display:block}
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;background:
+    linear-gradient(90deg,rgba(10,8,7,.70) 0%,rgba(10,8,7,.42) 38%,rgba(10,8,7,.10) 100%),
+    linear-gradient(180deg,rgba(10,8,7,.25) 0%,rgba(10,8,7,.12) 45%,rgba(10,8,7,.64) 100%)}
+  .hero-grid{position:relative;z-index:2;display:block;padding:clamp(150px,18vw,220px) var(--gut) clamp(54px,8vw,90px)}
+  .lab{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+  .lab::before{content:"";width:30px;height:1px;background:var(--ink)}
+  .hero h1{font-size:clamp(3rem,10vw,6.2rem)}
+  .hero h1 em{font-style:normal;color:rgba(247,241,231,.72)}
+  .hero .lead{font-size:clamp(1rem,2.4vw,1.18rem);color:rgba(247,241,231,.78);max-width:38ch;margin:28px 0 38px}
+  .hero .lab::before{background:#F7F1E7}
+  .hero .eyebrow{color:rgba(247,241,231,.72)}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .hero .btn-fill{background:#F7F1E7;color:var(--ink);border-color:#F7F1E7}
+  .hero .btn-fill:hover{background:transparent;color:#F7F1E7}
+  .hero .btn-line{color:#F7F1E7;border-color:rgba(247,241,231,.48)}
+  .hero .btn-line:hover{background:#F7F1E7;color:var(--ink);border-color:#F7F1E7}
+  .hero-visual{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+  .ph{width:100%;height:100%;display:flex;align-items:flex-end;background:
+      linear-gradient(135deg,#ece2d3 0%,#ddd0bd 50%,#cdbfa8 100%);position:relative}
+  .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+  .ph::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 22px,rgba(0,0,0,.018) 22px,rgba(0,0,0,.018) 23px)}
+  .ph .ph-l{font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(10,10,10,.4);padding:14px 16px;position:relative;z-index:2}
+  .hero-tag{position:absolute;left:0;bottom:0;background:var(--ink);color:#F7F1E7;padding:18px 22px;max-width:220px}
+  .hero-tag .t{font-size:1.05rem;font-weight:500;letter-spacing:.04em}
+  .hero-tag .d{font-size:.78rem;color:rgba(247,241,231,.65);margin-top:5px;line-height:1.45}
+
+  /* trust */
+  .trust{border-bottom:1px solid var(--line-2)}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .trust-item{padding:clamp(26px,4vw,40px) clamp(18px,2.5vw,30px);border-right:1px solid var(--line-2)}
+  .trust-item:last-child{border-right:none}
+  .trust-item .n{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--soft);letter-spacing:.1em;margin-bottom:16px}
+  .trust-item h4{font-weight:500;font-size:1.02rem;letter-spacing:-.01em}
+  .trust-item p{font-size:.86rem;color:var(--soft);margin-top:6px}
+
+  /* sections */
+  section{padding:clamp(64px,11vw,120px) 0}
+  .sec-head{max-width:660px;margin-bottom:clamp(40px,6vw,64px)}
+  .sec-head .lab{margin-bottom:22px}
+  .sec-head h2{font-size:clamp(2.1rem,6vw,3.8rem)}
+  .sec-head p{color:var(--soft);margin-top:18px;font-size:clamp(1rem,2.2vw,1.08rem);max-width:54ch}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(36px,6vw,72px);align-items:center}
+  .about-visual{aspect-ratio:1/1;overflow:hidden;background:var(--bg-2)}
+  .about-visual .ph img{object-position:center 38%}
+  .about-text h2{font-size:clamp(2rem,5.5vw,3.4rem);margin-bottom:6px}
+  .about-text .quote{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:300;color:var(--ink);margin:20px 0 24px;line-height:1.3;letter-spacing:-.02em}
+  .about-text p{color:var(--soft);margin-bottom:16px;font-size:1rem}
+  .sign{margin-top:24px;padding-top:20px;border-top:1px solid var(--line-2)}
+  .sign .nm{font-size:1.15rem;font-weight:500}
+  .sign .rl{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-top:4px}
+
+  /* services */
+  #sluzby{background:var(--bg-2)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2)}
+  .card{background:var(--bg);padding:clamp(26px,3.4vw,38px);display:flex;flex-direction:column;transition:background .35s var(--ease);position:relative;min-height:300px}
+  .card:hover{background:var(--ink);color:#F7F1E7}
+  .card .ci{display:flex;align-items:center;justify-content:space-between;margin-bottom:auto}
+  .card .ci .num{font-family:'DM Mono',monospace;font-size:.74rem;color:var(--soft);transition:color .3s}
+  .card .ic{width:34px;height:34px;color:var(--ink);transition:color .3s}
+  .card .ic svg{width:100%;height:100%;stroke-width:1.4}
+  .card:hover .num,.card:hover .ic{color:#F7F1E7}
+  .card h3{font-size:clamp(1.6rem,3vw,2rem);font-weight:300;margin:32px 0 12px}
+  .card p{font-size:.9rem;color:var(--soft);transition:color .3s;margin-bottom:24px}
+  .card:hover p{color:rgba(247,241,231,.7)}
+  .card .pr{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--line-2);transition:border-color .3s}
+  .card:hover .pr{border-color:rgba(247,241,231,.2)}
+  .card .pr .val{font-size:1.15rem;font-weight:400}
+  .card .pr .u{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--soft);letter-spacing:.08em;transition:color .3s}
+  .card:hover .u{color:rgba(247,241,231,.6)}
+  .card .pr .ar{width:14px;height:14px;transform:translateX(-4px);opacity:0;transition:.35s var(--ease)}
+  .card:hover .ar{transform:none;opacity:1}
+
+  /* feature */
+  .feature{background:var(--ink);color:#F7F1E7}
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,72px);align-items:center}
+  .feature .lab::before{background:#F7F1E7}
+  .feature .eyebrow{color:rgba(247,241,231,.55)}
+  .feature h2{font-size:clamp(2.1rem,6vw,3.8rem);color:#F7F1E7}
+  .feature p{color:rgba(247,241,231,.65);margin:20px 0 28px;font-size:1.04rem}
+  .feature ul{list-style:none;display:grid;gap:14px;margin-bottom:34px}
+  .feature li{display:flex;gap:14px;align-items:flex-start;font-size:.98rem;color:rgba(247,241,231,.88)}
+  .feature li .mono{color:rgba(247,241,231,.45);font-size:.74rem;flex-shrink:0;padding-top:3px}
+  .feature-visual{aspect-ratio:5/6;overflow:hidden;background:#1a1a1a;position:relative}
+  .feature-visual .ph{background:linear-gradient(135deg,#2c241f,#1d1714 60%,#120d0b)}
+  .feature-visual .ph img{object-position:center}
+  .feature-visual .ph::after{background:repeating-linear-gradient(45deg,transparent,transparent 22px,rgba(247,241,231,.02) 22px,rgba(247,241,231,.02) 23px)}
+  .feature-visual .ph .ph-l{color:rgba(247,241,231,.35)}
+  .feature-stat{position:absolute;right:0;top:0;background:#F7F1E7;color:var(--ink);padding:16px 22px;text-align:right}
+  .feature-stat .n{font-size:2rem;font-weight:300;line-height:1}
+  .feature-stat .l{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-top:4px}
+
+  /* pricelist */
+  .price-list{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(30px,5vw,72px);margin-bottom:40px}
+  .price-row{display:flex;align-items:baseline;gap:14px;padding:18px 0;border-bottom:1px solid var(--line-2)}
+  .price-row .name{font-size:1rem}
+  .price-row .dots{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-4px);min-width:16px}
+  .price-row .val{font-size:1.12rem;font-weight:400;white-space:nowrap}
+
+  /* booking */
+  .cta-box{background:var(--ink);color:#F7F1E7;padding:clamp(40px,7vw,72px)}
+  .cta-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(36px,6vw,60px);align-items:center}
+  .cta-box h2{font-size:clamp(2rem,5.5vw,3.4rem);color:#F7F1E7}
+  .cta-box p{color:rgba(247,241,231,.65);margin:18px 0 30px;max-width:44ch}
+  .cta-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .contact-card{border:1px solid rgba(247,241,231,.18)}
+  .c-row{display:flex;gap:16px;align-items:flex-start;padding:22px 24px;border-bottom:1px solid rgba(247,241,231,.12)}
+  .c-row:last-child{border-bottom:none}
+  .c-row .mono{color:rgba(247,241,231,.45);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase}
+  .c-row .v{font-size:1.02rem;color:#F7F1E7;margin-top:4px}
+  .c-row a.v:hover{color:rgba(247,241,231,.6)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line-2);padding:clamp(50px,7vw,72px) 0 36px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;padding-bottom:46px;border-bottom:1px solid var(--line-2)}
+  footer .desc{margin-top:18px;font-size:.92rem;color:var(--soft);max-width:36ch}
+  footer h5{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-bottom:18px}
+  footer ul{list-style:none;display:grid;gap:11px}
+  footer ul a,footer ul li{font-size:.92rem;color:var(--ink);transition:color .25s}
+  footer ul a:hover{color:var(--soft)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:26px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--soft);flex-wrap:wrap;gap:10px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== responsive ===== */
+  @media(max-width:1000px){
+    .nav-mid{display:none}
+    .hero-grid,.about-grid,.feature-grid,.cta-grid{grid-template-columns:1fr}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .feature-visual{order:-1;max-height:60vh}
+    .about-visual{max-width:420px}
+    .price-list{grid-template-columns:1fr;gap:0}
+  }
+  @media(max-width:680px){
+    .nav-right .btn{display:none}
+    .cards{grid-template-columns:1fr}
+    .card{min-height:0}
+    .trust-grid{grid-template-columns:1fr 1fr}
+    .trust-item:nth-child(2){border-right:none}
+    .trust-item{border-bottom:1px solid var(--line-2)}
+    .trust-item:nth-last-child(-n+2){border-bottom:none}
+    .hero-actions .btn,.cta-actions .btn{flex:1 1 100%}
+    .foot-grid{grid-template-columns:1fr;gap:34px}
+    .feature-stat{padding:12px 16px}
+    .feature-stat .n{font-size:1.6rem}
+  }
+  @media(max-width:420px){
+    .trust-grid{grid-template-columns:1fr}
+    .trust-item{border-right:none;border-bottom:1px solid var(--line-2)}
+    .trust-item:last-child{border-bottom:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="#" class="brand" aria-label="Viktorie Viktorová Face & Body Studio">
+      <img class="brand-logo" src="assets/viktorie-logo-transparent.png" alt="Viktorie Viktorová">
+    </a>
+    <nav class="nav-mid">
+      <a href="#osalonu">O salonu</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#hifu">Lifting</a>
+      <a href="#cenik">Ceník</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#rezervace" class="btn btn-fill">Objednat</a>
+      <button class="menu-btn" id="openMenu" aria-label="Otevřít menu" aria-expanded="false">
+        Menu
+        <span class="bars"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MODAL MENU -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Navigace">
+  <div class="modal-top">
+    <span class="mark">FACE &amp; BODY STUDIO</span>
+    <button class="close-btn" id="closeMenu" aria-label="Zavřít menu">
+      Zavřít
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <nav class="modal-nav">
+      <a href="#osalonu" data-close><span class="idx">01</span>O salonu</a>
+      <a href="#sluzby" data-close><span class="idx">02</span>Služby</a>
+      <a href="#hifu" data-close><span class="idx">03</span>Lifting</a>
+      <a href="#cenik" data-close><span class="idx">04</span>Ceník</a>
+      <a href="#rezervace" data-close><span class="idx">05</span>Kontakt</a>
+    </nav>
+  </div>
+  <div class="modal-foot">
+    <div class="blk"><div class="k">Telefon</div><a class="v" href="tel:+420722688308">+420 722 688 308</a></div>
+    <div class="blk"><div class="k">E-mail</div><a class="v" href="mailto:viktorieviktorova@gmail.com">viktorieviktorova@gmail.com</a></div>
+    <div class="blk"><div class="k">Adresa</div><div class="v">Floriánská 665, Kladno</div></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata">
+      <source src="assets/hero-video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <div class="lab"><span class="eyebrow">Lékařská kosmetika PURLÉS</span></div>
+      <h1>Zdravá pleť,<br><em>krásná pleť</em></h1>
+      <p class="lead">Kompletní péče o pleť i tělo — od klasického ošetření po neinvazivní estetické zákroky. Vždy individuálně, podle aktuálního stavu vaší pleti.</p>
+      <div class="hero-actions">
+        <a href="#rezervace" class="btn btn-fill">Objednat termín
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="#sluzby" class="btn btn-line">Prohlédnout služby</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="wrap trust-grid">
+    <div class="trust-item reveal"><div class="n">01</div><h4>Individuální přístup</h4><p>Hledáme příčinu, ne jen příznak.</p></div>
+    <div class="trust-item reveal" style="transition-delay:.08s"><div class="n">02</div><h4>Lékařská kosmetika</h4><p>Dermokosmetika PURLÉS.</p></div>
+    <div class="trust-item reveal" style="transition-delay:.16s"><div class="n">03</div><h4>Neinvazivně</h4><p>Bez skalpelu a rekonvalescence.</p></div>
+    <div class="trust-item reveal" style="transition-delay:.24s"><div class="n">04</div><h4>Relaxace</h4><p>Klidné prostředí jen pro vás.</p></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="osalonu">
+  <div class="wrap about-grid">
+    <div class="about-visual reveal">
+      <!-- FOTO: portrét 1:1 -->
+      <div class="ph">
+        <img src="assets/portrait-salon.jpeg" alt="Petra Viktorie Viktorová v salonu">
+        <span class="ph-l">Petra Viktorie Viktorová</span>
+      </div>
+    </div>
+    <div class="about-text reveal" style="transition-delay:.12s">
+      <div class="lab"><span class="eyebrow">O salonu</span></div>
+      <h2>FACE &amp; BODY STUDIO</h2>
+      <p class="quote">„V mé práci hledám příčinu, ne jen řeším následek.“</p>
+      <p>Zaměřuji se na komplexní péči nejen o pleť, ale i o celé tělo. Od standardního kosmetického ošetření po neinvazivní estetické zákroky — vše vždy individuálně podle aktuálního stavu pleti.</p>
+      <p>Důležitá je především domácí péče, kterou svým klientkám nastavuji a dávám jí směr. Právě v tom je půl úspěchu. Spolupracuji i s paní doktorkou z estetické kliniky a s odbornicí na permanentní make-up.</p>
+      <div class="sign">
+        <div class="nm">Petra Viktorie Viktorová</div>
+        <div class="rl">Majitelka &amp; kosmetička</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="sluzby">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="lab"><span class="eyebrow">Co nabízím</span></div>
+      <h2>Služby šité na míru vaší pleti</h2>
+      <p>Vyberte si ze široké nabídky ošetření pleti i těla. Vše lze kombinovat do individuálních balíčků na jednu návštěvu.</p>
+    </div>
+    <div class="cards">
+
+      <div class="card reveal">
+        <div class="ci"><span class="num">01</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span></div>
+        <h3>Kosmetické ošetření</h3>
+        <p>Kompletní i liftingové ošetření všech typů pleti, ultrazvuková špachtle, peelingy a masáže obličeje.</p>
+        <div class="pr"><span class="val">od 800 Kč <span class="u">/ ošetření</span></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+
+      <div class="card reveal" style="transition-delay:.07s">
+        <div class="ci"><span class="num">02</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12c3-4 6-6 9-6s6 2 9 6c-3 4-6 6-9 6s-6-2-9-6z"/><circle cx="12" cy="12" r="2.5"/></svg></span></div>
+        <h3>HIFU lifting</h3>
+        <p>Fokusovaný ultrazvuk až do vrstvy SMAS. Neinvazivní lifting obličeje, krku a dekoltu bez jizev.</p>
+        <div class="pr"><span class="val">od 3 900 Kč <span class="u">/ partie</span></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+
+      <div class="card reveal" style="transition-delay:.14s">
+        <div class="ci"><span class="num">03</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></span></div>
+        <h3>Thermage Ultra</h3>
+        <p>Radiofrekvenční omlazení schválené FDA. Vypne a konturuje kůži — oddálí plastiku o 5–10 let.</p>
+        <div class="pr"><span class="val">od 4 500 Kč <span class="u">/ ošetření</span></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+
+      <div class="card reveal">
+        <div class="ci"><span class="num">04</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></span></div>
+        <h3>Fotorejuvenace</h3>
+        <p>Omlazení pleti pulzním světlem. Vyhlazení vrásek, zpevnění a vypnutí pokožky — zcela bezbolestně.</p>
+        <div class="pr"><span class="val">od 2 699 Kč <span class="u">/ ošetření</span></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+
+      <div class="card reveal" style="transition-delay:.07s">
+        <div class="ci"><span class="num">05</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l2 5 5 .5-4 3.5 1.5 5L12 18l-4.5 3 1.5-5-4-3.5 5-.5z"/></svg></span></div>
+        <h3>Kryolipolýza</h3>
+        <p>Zmražení tukových buněk. Redukce podkožního tuku o 25–45 % už po jednom ošetření, bez operace.</p>
+        <div class="pr"><span class="val">od 3 500 Kč <span class="u">/ partie</span></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+
+      <div class="card reveal" style="transition-delay:.14s">
+        <div class="ci"><span class="num">06</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 18l8-12 8 12M4 18c2-1 14-1 16 0M9 11h6"/></svg></span></div>
+        <h3>Mezoterapie &amp; líčení</h3>
+        <p>Přístrojová mezoterapie, mezoterapie rtů, denní i večerní líčení, úprava a barvení obočí a řas.</p>
+        <div class="pr"><span class="val">od 300 Kč <span class="u">/ služba</span></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE HIFU -->
+<section id="hifu" class="feature">
+  <div class="wrap feature-grid">
+    <div class="reveal">
+      <div class="lab"><span class="eyebrow">Novinka · neinvazivní lifting</span></div>
+      <h2>HIFU fokusovaný ultrazvuk</h2>
+      <p>Facelift hollywoodských hvězd. Fokusovaným ultrazvukem zasáhneme až 4,5 mm pod pokožku do vrstvy SMAS, změníme strukturu tkáně a zajistíme výrazný liftingový efekt — zpevnění zevnitř.</p>
+      <ul>
+        <li><span class="mono">/</span>Lifting obličeje, krku a dekoltu bez jizev</li>
+        <li><span class="mono">/</span>Aktivace tvorby nového kolagenu</li>
+        <li><span class="mono">/</span>Bez rekonvalescence — hned zpět do běžného života</li>
+        <li><span class="mono">/</span>Výsledek přetrvává až několik let</li>
+      </ul>
+      <a href="#rezervace" class="btn btn-inv">Konzultace zdarma
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="reveal" style="transition-delay:.12s">
+      <div class="feature-visual">
+        <!-- FOTO: HIFU 5:6 -->
+        <div class="ph">
+          <img src="assets/feature-treatment.png" alt="HIFU fokusovaný ultrazvuk - neinvazivní liftingové ošetření">
+          <span class="ph-l">HIFU fokusovaný ultrazvuk</span>
+        </div>
+        <div class="feature-stat"><div class="n">4,5 mm</div><div class="l">hloubka SMAS</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICELIST -->
+<section id="cenik">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="lab"><span class="eyebrow">Ceník</span></div>
+      <h2>Vybrané ceny ošetření</h2>
+      <p>Kompletní ceník vám rádi představíme při konzultaci. Ošetření hradíte až na místě — nic neplatíte předem.</p>
+    </div>
+    <div class="price-list reveal">
+      <div class="price-row"><span class="name">Kompletní kosmetické ošetření</span><span class="dots"></span><span class="val">1 350 Kč</span></div>
+      <div class="price-row"><span class="name">Liftingové ošetření pleti</span><span class="dots"></span><span class="val">1 450 Kč</span></div>
+      <div class="price-row"><span class="name">Ošetření s ultrazvukovou špachtlí</span><span class="dots"></span><span class="val">800 Kč</span></div>
+      <div class="price-row"><span class="name">Přístrojová mezoterapie</span><span class="dots"></span><span class="val">od 2 200 Kč</span></div>
+      <div class="price-row"><span class="name">Fotorejuvenace</span><span class="dots"></span><span class="val">od 2 699 Kč</span></div>
+      <div class="price-row"><span class="name">Thermage Ultra</span><span class="dots"></span><span class="val">od 4 500 Kč</span></div>
+      <div class="price-row"><span class="name">HIFU lifting obličeje a krku</span><span class="dots"></span><span class="val">od 4 500 Kč</span></div>
+      <div class="price-row"><span class="name">Kryolipolýza</span><span class="dots"></span><span class="val">od 3 500 Kč</span></div>
+    </div>
+    <a href="#rezervace" class="btn btn-line reveal">Zobrazit celý ceník &amp; objednat</a>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="rezervace">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cta-grid">
+        <div>
+          <div class="lab"><span class="eyebrow" style="color:rgba(247,241,231,.55)">Rezervace</span></div>
+          <h2>Objednejte se na termín</h2>
+          <p>Chcete se objednat nebo poradit s výběrem ošetření? Zavolejte nebo napište a domluvíme vhodný termín i proceduru podle aktuálního stavu vaší pleti či těla.</p>
+          <div class="cta-actions">
+            <a href="tel:+420722688308" class="btn btn-inv">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>
+              Zavolat</a>
+            <a href="mailto:viktorieviktorova@gmail.com" class="btn btn-line-inv">Napsat e-mail</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="c-row">
+            <div><div class="mono">Telefon</div><a class="v" href="tel:+420722688308">+420 722 688 308</a></div>
+          </div>
+          <div class="c-row">
+            <div><div class="mono">E-mail</div><a class="v" href="mailto:viktorieviktorova@gmail.com">viktorieviktorova@gmail.com</a></div>
+          </div>
+          <div class="c-row">
+            <div><div class="mono">Adresa</div><div class="v">Floriánská 665, 272 01 Kladno</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand"><span class="mark" style="font-size:1.3rem;font-weight:500">FACE &amp; BODY STUDIO</span><span class="sub">Kosmetika Kladno</span></div>
+        <p class="desc">Komplexní péče o pleť i tělo s lékařskou kosmetikou PURLÉS. Zdravá pleť, krásná pleť.</p>
+      </div>
+      <div>
+        <h5>Služby</h5>
+        <ul>
+          <li><a href="#sluzby">Kosmetické ošetření</a></li>
+          <li><a href="#hifu">HIFU lifting</a></li>
+          <li><a href="#sluzby">Thermage Ultra</a></li>
+          <li><a href="#sluzby">Fotorejuvenace</a></li>
+          <li><a href="#sluzby">Kryolipolýza</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Kontakt</h5>
+        <ul>
+          <li><a href="tel:+420722688308">+420 722 688 308</a></li>
+          <li><a href="mailto:viktorieviktorova@gmail.com">viktorieviktorova@gmail.com</a></li>
+          <li>Floriánská 665, 272 01 Kladno</li>
+          <li>IČO: 88604853</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025 FACE &amp; BODY STUDIO — Petra Viktorie Viktorová</span>
+      <span>Demo · obsah a fotografie se doplní</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const hdr=document.getElementById('hdr');
+  const onScroll=()=>hdr.classList.toggle('scrolled',window.scrollY>20);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  const modal=document.getElementById('modal');
+  const openBtn=document.getElementById('openMenu');
+  const closeBtn=document.getElementById('closeMenu');
+  const open=()=>{modal.classList.add('open');document.body.classList.add('lock');openBtn.setAttribute('aria-expanded','true');};
+  const close=()=>{modal.classList.remove('open');document.body.classList.remove('lock');openBtn.setAttribute('aria-expanded','false');};
+  openBtn.addEventListener('click',open);
+  closeBtn.addEventListener('click',close);
+  document.querySelectorAll('[data-close]').forEach(a=>a.addEventListener('click',close));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
